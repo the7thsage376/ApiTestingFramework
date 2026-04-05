@@ -1,86 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Project Info -->
     <groupId>org.example</groupId>
     <artifactId>RestAssuredFirstGroup2026</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- Java version -->
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- 🔒 FORCE dependency versions (prevents conflicts in CI) -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Force TestNG version everywhere -->
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>7.11.0</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <!-- Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+
+        <!-- REST Assured (API Testing) -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>6.0.0</version>
-            <scope>Basic.userRegistration</scope>
         </dependency>
 
+        <!-- TestNG (single source of truth) -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.11.0</version>
-            <scope>basic.UserRegistration</scope>
         </dependency>
 
+        <!-- Allure Reporting (exclude TestNG to avoid conflict) -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>2.29.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.testng</groupId>
+                    <artifactId>testng</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- JSON parsing (lightweight) -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
 
+        <!-- JSON parsing (recommended modern library) -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.13.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-testng</artifactId>
-            <version>2.29.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-
+        <!-- JSON schema validation -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>5.5.1</version>
-            <scope>basic.UserRegistration</scope>
         </dependency>
 
+        <!-- Fake data generator -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+            <exclusions>
+                <!-- Prevent old SnakeYAML conflict -->
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- MySQL connector (optional if DB testing is needed) -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
 
+        <!-- OPTIONAL: YAML support (only if you use .yml files) -->
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>json-path</artifactId>
-            <version>5.4.0</version>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.17.0</version>
-        </dependency>
-
     </dependencies>
 
+    <build>
+        <plugins>
 
+            <!-- Surefire plugin (runs TestNG tests) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- Updated for Java 21 + stability -->
+                <version>3.2.5</version>
+                <configuration>
+
+                    <!-- Parallel execution -->
+                    <parallel>methods</parallel>
+                    <threadCount>2</threadCount>
+
+                    <!-- Don't stop immediately on failure -->
+                    <skipAfterFailureCount>1000</skipAfterFailureCount>
+
+                    <!-- Show logs in console -->
+                    <useFile>false</useFile>
+
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>
