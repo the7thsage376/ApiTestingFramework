@@ -7,8 +7,10 @@ import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import payloadBuilder.payloadBuilder;
+import requestBuilder.ApiRequestBuilder;
 
 import static common.BaseUri.baseURL;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 public class userRegistration{
 
@@ -24,118 +26,101 @@ public class userRegistration{
 
 
         @Test (dependsOnMethods = "adminLoginTest" )
+
         public void registerNewAccount() {
 
             String apiPath = "/APIDEV/register";
+
             registeredEmail = Faker.instance().internet().emailAddress();
-
-            JSONObject registerBody = payloadBuilder.registerUserPayload("John","Snow",registeredEmail,"@password123","@password123","1deae17a-c67a-4bb0-bdeb-df0fc9e2e526");
-
-
-            Response response = RestAssured.given()
-                    .baseUri(baseURL)
-                    .basePath(apiPath)
-                    .header("content-type","application/json")
-                    .body(registerBody.toJSONString())
-                    .log().all()
-                    .post().prettyPeek();
-
-            // Verify that the tests return the right status code
-            userId = response.jsonPath().getString("data.id");
-            int actualStatusCode = response.getStatusCode();
-            Assert.assertEquals(actualStatusCode, 201, "Status code should be 201");
-
+                ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,"@password123","@password123","1deae17a-c67a-4bb0-bdeb-df0fc9e2e526")
+                        .then()
+                        .log().all()
+                        .assertThat()
+                        .statusCode(201)
+                        .body("success", equalTo(true));
 
         }
+
+
         @Test(dependsOnMethods = "registerNewAccount")
         public void ApproveUser() {
 
-            String apiPath = "/APIDEV/admin/users/{userId}/status";
-
-            String payload = "{\n" +
-                    "  \"isActive\": true\n" +
-                    "}";
-            Response response = RestAssured.given()
-                    .baseUri(baseURL)
-                    .basePath(apiPath)
-                    .header("content-type", "application/json")
-                    .header("Authorization", "Bearer " + authToken)
-                    .pathParam("userId", userId)
-                    .body(payload)
-                    .log().all()
-                    .put().prettyPeek();
-
-            int actualStatusCode = response.getStatusCode();
-            Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
-        }
-
-        @Test (dependsOnMethods = "ApproveUser")
-
-        public void NewAdmin() {
-
-            String apiPath = "/APIDEV/admin/users/{userId}/role";
-
-            String payload = "{\n" +
-                    "  \"role\": \"admin\"\n" +
-                    "}";
-
-            Response response = RestAssured.given()
-                    .baseUri(baseURL)
-                    .basePath(apiPath)
-                    .header("content-type", "application/json")
-                    .header("Authorization", "Bearer " + authToken)
-                    .pathParam("userId", userId)
-                    .body(payload)
-                    .log().all()
-                    .put().prettyPeek();
-
-            int actualStatusCode = response.getStatusCode();
-            Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
-        }
+                String apiPath = "/APIDEV/admin/users/{userId}/status";
+                ApiRequestBuilder.approveUserResponse()
+                        .then()
+                        .log().all()
+                        .assertThat()
+                        .statusCode(200)
+                        .body("success", equalTo(true));
 
 
-        @Test(dependsOnMethods = "NewAdmin")
-        public void NewadminLoginTest() {
+                @Test(dependsOnMethods = "ApproveUser")
 
-            String apiPath = "/APIDEV/login";
-            JSONObject loginBody = payloadBuilder.loginuserPayload(registeredEmail,"@password123");
+                public void NewAdmin () {
+
+                    String apiPath = "/APIDEV/admin/users/{userId}/role";
+
+                    String payload = "{\n" +
+                            "  \"role\": \"admin\"\n" +
+                            "}";
+
+                    Response response = RestAssured.given()
+                            .baseUri(baseURL)
+                            .basePath(apiPath)
+                            .header("content-type", "application/json")
+                            .header("Authorization", "Bearer " + authToken)
+                            .pathParam("userId", userId)
+                            .body(payload)
+                            .log().all()
+                            .put().prettyPeek();
+
+                    int actualStatusCode = response.getStatusCode();
+                    Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
+                }
 
 
+                @Test(dependsOnMethods = "NewAdmin")
+                public void NewadminLoginTest () {
 
-            Response response = RestAssured.given()
-                    .baseUri(baseURL)
-                    .basePath(apiPath)
-                    .header("content-type","application/json")
-                    .body(loginBody.toJSONString())
-                    .log().all()
-                    .post().prettyPeek();
+                    String apiPath = "/APIDEV/login";
+                    JSONObject loginBody = payloadBuilder.loginuserPayload(registeredEmail, "@password123");
 
-            int actualStatusCode = response.getStatusCode();
-            Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
 
-            // NewAuthToken = response.jsonPath().getString("data.token");
-            // Verify that the user is an admin
+                    Response response = RestAssured.given()
+                            .baseUri(baseURL)
+                            .basePath(apiPath)
+                            .header("content-type", "application/json")
+                            .body(loginBody.toJSONString())
+                            .log().all()
+                            .post().prettyPeek();
 
-        }
-        @Test(dependsOnMethods = "NewadminLoginTest")
+                    int actualStatusCode = response.getStatusCode();
+                    Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
 
-        // Delete newly made admin
-        public void DeleteUser() {
+                    // NewAuthToken = response.jsonPath().getString("data.token");
+                    // Verify that the user is an admin
 
-            String apiPath = "/APIDEV/admin/users/{userId}";
+                }
+                @Test(dependsOnMethods = "NewadminLoginTest")
 
-            Response response = RestAssured.given()
-                    .baseUri(baseURL)
-                    .basePath(apiPath)
-                    .header("content-type", "application/json")
-                    .header("Authorization", "Bearer " + authToken)
-                    .pathParam("userId", userId)
-                    .log().all()
-                    .delete().prettyPeek();
+                // Delete newly made admin
+                public void DeleteUser () {
 
-            int actualStatusCode = response.getStatusCode();
-            Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
-        }
+                    String apiPath = "/APIDEV/admin/users/{userId}";
+
+                    Response response = RestAssured.given()
+                            .baseUri(baseURL)
+                            .basePath(apiPath)
+                            .header("content-type", "application/json")
+                            .header("Authorization", "Bearer " + authToken)
+                            .pathParam("userId", userId)
+                            .log().all()
+                            .delete().prettyPeek();
+
+                    int actualStatusCode = response.getStatusCode();
+                    Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
+                }
+            
 
 
 
