@@ -11,8 +11,8 @@ import static common.BaseUri.baseURL;
 
 public class ApiRequestBuilder {
 
-    static String authToken;
-    static String userId;
+   public static String authToken;
+   public static String userId;
 
     public static Response loginUserResponse(String email, String password) {
 
@@ -55,9 +55,11 @@ public class ApiRequestBuilder {
 
     }
 
-    public static Response approveUserResponse() {
+    public static Response approveUserResponse(String statusValue) {
 
         String apiPath = "/APIDEV/admin/users/{userId}/status";
+        JSONObject statusBody = new JSONObject();
+        statusBody.put("isActive", statusValue);
 
         return RestAssured.given()
                 .baseUri(baseURL)
@@ -65,6 +67,7 @@ public class ApiRequestBuilder {
                 .header("content-type", "application/json")
                 .header("Authorization", "Bearer " + authToken)
                 .pathParam("userId", userId)
+                .body(statusBody.toJSONString())
                 .log().all()
                 .put().prettyPeek()
                 .then().extract().response();

@@ -11,25 +11,30 @@ import requestBuilder.ApiRequestBuilder;
 
 import static common.BaseUri.baseURL;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static requestBuilder.ApiRequestBuilder.authToken;
+import static requestBuilder.ApiRequestBuilder.userId;
 
 public class userRegistration{
 
-      static String authToken;
-      static String userId;
+
       static String registeredEmail;
-      static String NewAuthToken;
 
 
         @Test
         public void adminLoginTest() {
+            ApiRequestBuilder.loginUserResponse("tester@gmail.com", "@password123")
+                    .then()
+                    .log().all()
+                    .assertThat()
+                    .statusCode(200)
+                    .body("success", equalTo(true));
+        }
 
 
 
         @Test (dependsOnMethods = "adminLoginTest" )
 
         public void registerNewAccount() {
-
-            String apiPath = "/APIDEV/register";
 
             registeredEmail = Faker.instance().internet().emailAddress();
                 ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,"@password123","@password123","1deae17a-c67a-4bb0-bdeb-df0fc9e2e526")
@@ -45,13 +50,13 @@ public class userRegistration{
         @Test(dependsOnMethods = "registerNewAccount")
         public void ApproveUser() {
 
-                String apiPath = "/APIDEV/admin/users/{userId}/status";
-                ApiRequestBuilder.approveUserResponse()
-                        .then()
-                        .log().all()
-                        .assertThat()
-                        .statusCode(200)
-                        .body("success", equalTo(true));
+            ApiRequestBuilder.approveUserResponse("true")
+                    .then()
+                    .log().all()
+                    .assertThat()
+                    .statusCode(200)
+                    .body("success", equalTo(true));
+        }
 
 
                 @Test(dependsOnMethods = "ApproveUser")
@@ -93,11 +98,11 @@ public class userRegistration{
                             .body(loginBody.toJSONString())
                             .log().all()
                             .post().prettyPeek();
+                    response.then().body("data.user.role", equalTo("admin"));// Verifies new account is admin
 
                     int actualStatusCode = response.getStatusCode();
                     Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
 
-                    // NewAuthToken = response.jsonPath().getString("data.token");
                     // Verify that the user is an admin
 
                 }
