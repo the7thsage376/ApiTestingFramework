@@ -106,6 +106,8 @@ public class userRegistration{
                     // Verify that the user is an admin
 
                 }
+
+                
                 @Test(dependsOnMethods = "NewadminLoginTest")
 
                 // Delete newly made admin

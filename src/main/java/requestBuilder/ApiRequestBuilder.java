@@ -18,8 +18,6 @@ public class ApiRequestBuilder {
 
         String apiPath = "/APIDEV/login";
 
-        //JSONObject loginBody = payloadBuilder.loginuserPayload("tester@gmail.com","@password123");
-
         Response response = RestAssured.given()
                 .baseUri(baseURL)
                 .basePath(apiPath)
@@ -38,8 +36,6 @@ public class ApiRequestBuilder {
     public static Response registerUserResponse(String firstName, String lastName, String email, String password, String confirmPassword, String groupId) {
 
         String apiPath = "/APIDEV/register";
-
-        //JSONObject loginBody = payloadBuilder.loginuserPayload("tester@gmail.com","@password123");
 
         Response response = RestAssured.given()
                 .baseUri(baseURL)
@@ -74,6 +70,7 @@ public class ApiRequestBuilder {
 
         
     }
+
 
 
 

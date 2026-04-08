@@ -31,3 +31,20 @@ public class payloadBuilder {
         return registerUser;
     }
 }
+
+
+//// update user to be admin user
+//public static Response updateUserRoleResponse(String role) {
+//
+//    String apiPath = "/APIDEV/admin/users/"+registeredUserId+"/role";
+//    return RestAssured.given()
+//            .baseUri(baseURL)
+//            .basePath(apiPath)
+//            .header("Content-Type", "application/json")
+//            .header("Authorization", "Bearer " + authToken)
+//            .body(approveRolePayload(role))
+//            .log().all()
+//            .put()
+//            .then().extract().response();
+//}
+//
