@@ -33,7 +33,6 @@ public class userRegistration{
 
 
         @Test (dependsOnMethods = "adminLoginTest" )
-
         public void registerNewAccount() {
 
             registeredEmail = Faker.instance().internet().emailAddress();
