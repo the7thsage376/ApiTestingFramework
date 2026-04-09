@@ -86,16 +86,20 @@ public static Response NewAdminRoleResponse(String role) {
             .then().extract().response();
 }
 
-    public static Response deleteUserResponse() {
-        String apiPath = "/APIDEV/admin/users/{userId}";
-        return RestAssured.given()
-                .baseUri(baseURL)
-                .basePath(apiPath)
-                .header("content-type", "application/json")
-                .header("Authorization", "Bearer " + authToken)
-                .pathParam("userId", userId)
-                .log().all()
-                .delete()
-                .then().extract().response();
-    }
+public static Response deleteUserResponse() {
+
+    String apiPath = "/APIDEV/admin/users/{userId}";
+
+    return RestAssured.given()
+            .baseUri(baseURL)
+            .basePath(apiPath)
+            .header("content-type", "application/json")
+            .header("Authorization", "Bearer " + authToken)
+            .pathParam("userId", userId)
+            .log().all()
+            .delete().prettyPeek()
+            .then().extract().response();
+}
+
+
 }

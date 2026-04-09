@@ -75,43 +75,32 @@ public class userRegistration{
         @Test(dependsOnMethods = "NewAdminRole")
         public void NewadminLoginTest (){
 
-        String apiPath = "/APIDEV/login";
-        JSONObject loginBody = payloadBuilder.loginuserPayload(registeredEmail, "@password123");
-
-
-        Response response = RestAssured.given()
-                .baseUri(baseURL)
-                .basePath(apiPath)
-                .header("content-type", "application/json")
-                .body(loginBody.toJSONString())
-                .log().all()
-                .post().prettyPeek();
-        response.then().body("data.user.role", equalTo("admin"));// Verifies new account is admin
-
-        int actualStatusCode = response.getStatusCode();
-        Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
-
-    }
-
+                ApiRequestBuilder.loginUserResponse(registeredEmail, "@password123")
+                        .then()
+                        .log().all()
+                        .assertThat()
+                        .statusCode(200)
+                        .body("success", equalTo(true))
+                        .body("data.user.role", equalTo("admin"));
+            }
 
 
         @Test(dependsOnMethods = "NewadminLoginTest")
         public void DeleteUser () {
 
-        String apiPath = "/APIDEV/admin/users/{userId}";
+            ApiRequestBuilder.loginUserResponse("tester@gmail.com", "@password123");
+            ApiRequestBuilder.deleteUserResponse()
+                    .then()
+                    .log().all()
+                    .assertThat()
+                    .statusCode(200)
+                    .body("success", equalTo(true));
 
-        Response response = RestAssured.given()
-                .baseUri(baseURL)
-                .basePath(apiPath)
-                .header("content-type", "application/json")
-                .header("Authorization", "Bearer " + authToken)
-                .pathParam("userId", userId)
-                .log().all()
-                .delete().prettyPeek();
+    }
 
-        int actualStatusCode = response.getStatusCode();
-        Assert.assertEquals(actualStatusCode, 200, "Status code should be 200");
     }
 
 
-    }
+
+
+
