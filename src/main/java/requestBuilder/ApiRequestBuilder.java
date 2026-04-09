@@ -4,10 +4,9 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
-import static payloadBuilder.payloadBuilder.loginuserPayload;
-import static payloadBuilder.payloadBuilder.registerUserPayload;
 
 import static common.BaseUri.baseURL;
+import static payloadBuilder.payloadBuilder.*;
 
 public class ApiRequestBuilder {
 
@@ -71,9 +70,32 @@ public class ApiRequestBuilder {
         
     }
 
+   // update user to be admin user
+public static Response NewAdminRoleResponse(String role) {
 
+    String apiPath = "/APIDEV/admin/users/{userId}/role";
+    return RestAssured.given()
+            .baseUri(baseURL)
+            .basePath(apiPath)
+            .header("Content-Type", "application/json")
+            .header("Authorization", "Bearer " + authToken)
+            .pathParam("userId", userId)
+            .body(newAdminRolePayload(role))
+            .log().all()
+            .put()
+            .then().extract().response();
+}
 
-
-
-
+    public static Response deleteUserResponse() {
+        String apiPath = "/APIDEV/admin/users/{userId}";
+        return RestAssured.given()
+                .baseUri(baseURL)
+                .basePath(apiPath)
+                .header("content-type", "application/json")
+                .header("Authorization", "Bearer " + authToken)
+                .pathParam("userId", userId)
+                .log().all()
+                .delete()
+                .then().extract().response();
+    }
 }

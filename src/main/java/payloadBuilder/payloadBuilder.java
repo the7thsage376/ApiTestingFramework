@@ -30,7 +30,18 @@ public class payloadBuilder {
 
         return registerUser;
     }
+    // Makes the new account into an admin
+    public static JSONObject newAdminRolePayload( String role){
+
+        JSONObject newAdmin = new JSONObject();
+
+        newAdmin.put("role",role);
+
+        return newAdmin;
+    }
 }
+
+
 
 
 //// update user to be admin user
