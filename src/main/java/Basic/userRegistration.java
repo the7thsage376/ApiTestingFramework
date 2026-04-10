@@ -1,18 +1,10 @@
 package Basic;
 
 import com.github.javafaker.Faker;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.json.simple.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.Test;
-import payloadBuilder.payloadBuilder;
 import requestBuilder.ApiRequestBuilder;
 
-import static common.BaseUri.baseURL;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static requestBuilder.ApiRequestBuilder.authToken;
-import static requestBuilder.ApiRequestBuilder.userId;
 
 public class userRegistration{
 
