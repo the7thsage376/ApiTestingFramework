@@ -28,6 +28,7 @@ jobs:
           SECRET_GROUP: ${{ secrets.GROUP_ID }}
         run: |
           mvn test \
+          -Dtest=Basic.userRegistration \
           -Dadmin.email=$SECRET_EMAIL \
           -Dadmin.password=$SECRET_PASS \
           -Dgroup.id=$SECRET_GROUP
