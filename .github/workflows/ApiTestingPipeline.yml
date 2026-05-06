@@ -7,16 +7,28 @@ on:
   workflow_dispatch: # Allows manual trigger for testing
 jobs:
   test:
-    run on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-                - name: Set up JDK 21
-                uses: actions/setup-java@v4
-                with:
-                  java-version: '21'
-                  distribution: 'temurin'
-                  cache: 'maven'
+        uses: actions/checkout@v4
 
-                  
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Run API Tests
+        env:
+          # This maps the Vault name to a temporary variable the runner can use
+          SECRET_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          SECRET_PASS: ${{ secrets.ADMIN_PASSWORD }}
+          SECRET_GROUP: ${{ secrets.GROUP_ID }}
+        run: |
+          mvn test \
+          -Dadmin.email=$SECRET_EMAIL \
+          -Dadmin.password=$SECRET_PASS \
+          -Dgroup.id=$SECRET_GROUP
+
