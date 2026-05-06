@@ -1,0 +1,22 @@
+name: API Testing Suite
+
+# This defines when the environment is spun up
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual trigger for testing
+jobs:
+  test:
+    run on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+                - name: Set up JDK 21
+                uses: actions/setup-java@v4
+                with:
+                  java-version: '21'
+                  distribution: 'temurin'
+                  cache: 'maven'
+
+                  
