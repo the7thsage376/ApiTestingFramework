@@ -14,7 +14,7 @@ public class userRegistration{
 
         @Test
         public void adminLoginTest() {
-            ApiRequestBuilder.loginUserResponse("tester@gmail.com", "@password123")
+            ApiRequestBuilder.loginUserResponse("testing007@gmail.com", "@password1234")
                     .then()
                     .log().all()
                     .assertThat()
@@ -28,7 +28,7 @@ public class userRegistration{
         public void registerNewAccount() {
 
             registeredEmail = Faker.instance().internet().emailAddress();
-                ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,"@password123","@password123","1deae17a-c67a-4bb0-bdeb-df0fc9e2e526")
+                ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,"@password1234","@password1234","1deae17a-c67a-4bb0-bdeb-df0fc9e2e526")
                         .then()
                         .log().all()
                         .assertThat()
@@ -66,7 +66,7 @@ public class userRegistration{
         @Test(dependsOnMethods = "NewAdminRole")
         public void NewadminLoginTest (){
 
-                ApiRequestBuilder.loginUserResponse(registeredEmail, "@password123")
+                ApiRequestBuilder.loginUserResponse(registeredEmail, "@password1234")
                         .then()
                         .log().all()
                         .assertThat()
@@ -79,7 +79,7 @@ public class userRegistration{
         @Test(dependsOnMethods = "NewadminLoginTest")
         public void DeleteUser () {
 
-            ApiRequestBuilder.loginUserResponse("tester@gmail.com", "@password123");
+            ApiRequestBuilder.loginUserResponse("testing007@gmail.com", "@password1234");
             ApiRequestBuilder.deleteUserResponse()
                     .then()
                     .log().all()

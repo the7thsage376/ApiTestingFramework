@@ -13,3 +13,5 @@ test-output/
 
 # Log files
 *.log
+# config files
+src/main/resources/config.properties
