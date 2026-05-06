@@ -3,10 +3,10 @@ package Basic;
 import com.github.javafaker.Faker;
 import org.testng.annotations.Test;
 import requestBuilder.ApiRequestBuilder;
-
+import common.BaseUri;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class userRegistration{
+public class userRegistration extends BaseUri{
 
 
       static String registeredEmail;
@@ -14,7 +14,7 @@ public class userRegistration{
 
         @Test
         public void adminLoginTest() {
-            ApiRequestBuilder.loginUserResponse("testing007@gmail.com", "@password1234")
+            ApiRequestBuilder.loginUserResponse(Admin_Email, Admin_Password)
                     .then()
                     .log().all()
                     .assertThat()
@@ -28,7 +28,7 @@ public class userRegistration{
         public void registerNewAccount() {
 
             registeredEmail = Faker.instance().internet().emailAddress();
-                ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,"@password1234","@password1234","1deae17a-c67a-4bb0-bdeb-df0fc9e2e526")
+                ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,Admin_Password,Admin_Password,"1deae17a-c67a-4bb0-bdeb-df0fc9e2e526")
                         .then()
                         .log().all()
                         .assertThat()
@@ -66,7 +66,7 @@ public class userRegistration{
         @Test(dependsOnMethods = "NewAdminRole")
         public void NewadminLoginTest (){
 
-                ApiRequestBuilder.loginUserResponse(registeredEmail, "@password1234")
+                ApiRequestBuilder.loginUserResponse(registeredEmail, Admin_Password)
                         .then()
                         .log().all()
                         .assertThat()
@@ -79,7 +79,8 @@ public class userRegistration{
         @Test(dependsOnMethods = "NewadminLoginTest")
         public void DeleteUser () {
 
-            ApiRequestBuilder.loginUserResponse("testing007@gmail.com", "@password1234");
+            ApiRequestBuilder.loginUserResponse(Admin_Email, Admin_Password);
+
             ApiRequestBuilder.deleteUserResponse()
                     .then()
                     .log().all()
