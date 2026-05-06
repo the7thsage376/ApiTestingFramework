@@ -28,7 +28,7 @@ public class userRegistration extends BaseUri{
         public void registerNewAccount() {
 
             registeredEmail = Faker.instance().internet().emailAddress();
-                ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,Admin_Password,Admin_Password,"1deae17a-c67a-4bb0-bdeb-df0fc9e2e526")
+                ApiRequestBuilder.registerUserResponse("John","Snow",registeredEmail,Admin_Password,Admin_Password,group_Id)
                         .then()
                         .log().all()
                         .assertThat()
