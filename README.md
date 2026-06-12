@@ -60,14 +60,6 @@ Or pass them as system properties when running tests.
 
 ---
 
-### Run Tests
-
-**From IntelliJ IDEA** (recommended):
-1. Right-click `src/main/java/Basic/userRegistration.java`
-2. Select **Run 'userRegistration'** or create a TestNG run configuration
-
----
-
 **From Command Line**:
 
 ```powershell
