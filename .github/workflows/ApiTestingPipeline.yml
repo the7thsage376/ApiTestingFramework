@@ -27,7 +27,8 @@ jobs:
           SECRET_PASS: ${{ secrets.ADMIN_PASSWORD }}
           SECRET_GROUP: ${{ secrets.GROUP_ID }}
         run: |
-          mvn test \
+          // The pipeline was not cleaned during every run, so we need to clean it up before running the tests
+          mvn clean test -e -X \
             -Dadmin.email=$SECRET_EMAIL \
             -Dadmin.password=$SECRET_PASS \
             -Dgroup.id=$SECRET_GROUP

@@ -83,6 +83,7 @@
         </dependency>
 
         <!-- JSON schema validation -->
+        <!-- Exclude TestNG to avoid conflicts -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
