@@ -139,7 +139,7 @@
                         <include>**/userRegistration.java</include>
                     </includes>
 
-                    <forkCount>0</forkCount>
+                    <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
 
                     <parallel>methods</parallel>
