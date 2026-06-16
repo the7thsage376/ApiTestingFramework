@@ -6,49 +6,29 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Project Info -->
     <groupId>org.example</groupId>
     <artifactId>RestAssuredFirstGroup2026</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- Java version -->
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- 🔒 FORCE dependency versions (prevents conflicts in CI) -->
-    <dependencyManagement>
-        <dependencies>
-
-            <!-- Force TestNG version everywhere -->
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>7.11.0</version>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
-
-        <!-- REST Assured (API Testing) -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>6.0.0</version>
         </dependency>
 
-        <!-- TestNG (single source of truth) -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.10.2</version>
         </dependency>
 
-        <!-- Allure Reporting (exclude TestNG to avoid conflict) -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
@@ -61,34 +41,29 @@
             </exclusions>
         </dependency>
 
-        <!-- JSON parsing (lightweight) -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
 
-        <!-- JSON parsing (recommended modern library) -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.13.0</version>
         </dependency>
 
-        <!-- JSON schema validation -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>5.5.1</version>
         </dependency>
 
-        <!-- Fake data generator -->
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
             <exclusions>
-                <!-- Prevent old SnakeYAML conflict -->
                 <exclusion>
                     <groupId>org.yaml</groupId>
                     <artifactId>snakeyaml</artifactId>
@@ -96,14 +71,12 @@
             </exclusions>
         </dependency>
 
-        <!-- MySQL connector (optional if DB testing is needed) -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
 
-        <!-- OPTIONAL: YAML support (only if you use .yml files) -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -123,7 +96,6 @@
                     <includes>
                         <include>**/userRegistration.java</include>
                     </includes>
-
                     <parallel>methods</parallel>
                     <threadCount>2</threadCount>
                     <skipAfterFailureCount>1000</skipAfterFailureCount>
