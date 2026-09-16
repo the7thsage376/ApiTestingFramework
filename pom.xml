@@ -74,9 +74,6 @@
             <version>9.3.0</version>
         </dependency>
 
-        <!--SnakeYAML is a Java library used to read (parse) and write YAML files.
-        It provides a simple and efficient way to work with YAML data in Java applications.
-        SnakeYAML lets your Java code understand .yml or .yaml files.-->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -86,6 +83,9 @@
     </dependencies>
 
     <build>
+        <!-- Tells Maven your test classes are inside src/main/java -->
+        <testSourceDirectory>src/main/java</testSourceDirectory>
+
         <plugins>
 
             <plugin>
@@ -104,9 +104,26 @@
                 <version>3.2.5</version>
                 <configuration>
                     <includes>
+                        <include>**/userRegistration.java</include>
                         <include>**/*Test.java</include>
                     </includes>
+                    <useFile>true</useFile>
                 </configuration>
+            </plugin>
+
+            <!-- Generates HTML reports into target/site/surefire-report.html -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.2.5</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report-only</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
