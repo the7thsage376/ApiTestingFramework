@@ -1,3 +1,5 @@
+[![API Testing Suite](https://github.com/the7thsage376/ApiTestingFramework/actions/workflows/ApiTestingPipeline.yml/badge.svg)](https://github.com/the7thsage376/ApiTestingFramework/actions/workflows/ApiTestingPipeline.yml)
+
 # API Testing Framework
 
 A lightweight, end-to-end API testing framework for validating user registration and account management workflows. <br>
