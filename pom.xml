@@ -6,40 +6,32 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Project Info -->
     <groupId>org.example</groupId>
     <artifactId>ApiTestingFramework</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- Java version -->
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- 🔒 FORCE dependency versions (prevents conflicts in CI) -->
     <dependencyManagement>
         <dependencies>
-
-            <!-- Force TestNG version everywhere -->
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>7.10.2</version>
+                <version>7.9.0</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-
         <!-- REST Assured (API Testing) -->
-        <!-- Exclude testng to avoid transitive dependency conflicts -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>6.0.0</version>
+            <version>5.5.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.testng</groupId>
@@ -48,14 +40,14 @@
             </exclusions>
         </dependency>
 
-        <!-- TestNG (single source of truth) -->
+        <!-- TestNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.10.2</version>
+            <version>7.9.0</version>
         </dependency>
 
-        <!-- Allure Reporting (exclude TestNG to avoid conflict) -->
+        <!-- Allure Reporting -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
@@ -68,14 +60,13 @@
             </exclusions>
         </dependency>
 
-        <!-- JSON parsing (lightweight) -->
+        <!-- JSON parsing -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
 
-        <!-- JSON parsing (recommended modern library) -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -83,7 +74,6 @@
         </dependency>
 
         <!-- JSON schema validation -->
-        <!-- Exclude TestNG to avoid conflicts -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
@@ -102,7 +92,6 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
             <exclusions>
-                <!-- Prevent old SnakeYAML conflict -->
                 <exclusion>
                     <groupId>org.yaml</groupId>
                     <artifactId>snakeyaml</artifactId>
@@ -110,14 +99,14 @@
             </exclusions>
         </dependency>
 
-        <!-- MySQL connector (optional if DB testing is needed) -->
+        <!-- MySQL connector -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
 
-        <!-- OPTIONAL: YAML support (only if you use .yml files) -->
+        <!-- YAML support -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -130,10 +119,16 @@
 
         <plugins>
             <plugin>
-                <!-- Maven Surefire Plugin for running TestNG tests -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-testng</artifactId>
+                        <version>3.5.2</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <includes>
                         <include>**/userRegistration.java</include>
