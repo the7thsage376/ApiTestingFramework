@@ -32,4 +32,46 @@ jobs:
             -Dadmin.email=$SECRET_EMAIL \
             -Dadmin.password=$SECRET_PASS \
             -Dgroup.id=$SECRET_GROUP
+      - name: API Test Reports
+        if: always()
+        run: |
+          mkdir -p reports-payload
+          # Copy Surefire reports if they exist
+          if [ -d "target/surefire-reports" ]; then
+            cp -r target/surefire-reports reports-payload/
+          fi
+          # Copy Allure raw results if generated
+          if [ -d "allure-results" ]; then
+            cp -r allure-results reports-payload/
+          fi
+          zip -r test-reports.zip reports-payload/
 
+      - name: Upload Test Artifacts to GitHub
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-reports
+          path: test-reports.zip
+          retention-days: 14
+
+      - name: Send Test Report via Email
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "API E2E Suite Execution Status: ${{ job.status }} (${{ github.repository }})"
+          to: ${{ secrets.MAIL_USERNAME }}
+          from: "GitHub Actions CI <${{ secrets.MAIL_USERNAME }}>"
+          body: |
+            The API automated test run finished with status: ${{ job.status }}.
+            
+            Commit: ${{ github.sha }}
+            Branch: ${{ github.ref_name }}
+            Triggered by: ${{ github.actor }}
+            
+            Attached is the zipped test report containing raw execution logs and HTML files.
+          attachments: test-reports.zip
