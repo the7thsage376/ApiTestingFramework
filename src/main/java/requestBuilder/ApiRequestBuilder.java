@@ -3,7 +3,6 @@ package requestBuilder;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-import org.testng.Assert;
 
 import static common.BaseUri.baseURL;
 import static payloadBuilder.payloadBuilder.*;
